@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -27,7 +28,7 @@ public class ZigZag {
         int currentval=Integer.MAX_VALUE;
         int currentindex=-1;
         for(int i=index;i<array.length;i++){
-            if(array[i][0]<Integer.MAX_VALUE){
+            if(array[i][0]<currentval){
                 if(currentindex==-1){
                     currentval=array[i][0];
                     currentindex=i;
@@ -37,6 +38,7 @@ public class ZigZag {
                 }
             }
         }
+        //System.out.println("index:  "+currentindex+" current val: "+currentval);
         return currentindex;
     }
 
@@ -71,22 +73,24 @@ public class ZigZag {
             int newindex=-1;
             if(values[breakpoint][1]==1){
                 newindex=sethighesttLow(values,breakpoint);
-                //System.out.println(values[newindex][0]+" "+values[breakpoint][1]);
+                //System.out.println(values[newindex][0]+" "+values[breakpoint][0]);
                 //System.out.println("new Index= "+newindex);
                 if(newindex!=breakpoint) {
                     subseaquence[breakpoint] = values[newindex][0];
+                    values[newindex][1]=0;
                 }
-                values[newindex][1]=0;
+
             }else{
                 newindex=setlowestHigh(values,breakpoint);
                 //System.out.println("new Index= "+newindex);
                 if(newindex!=breakpoint) {
                     //System.out.println(values[newindex][0]+" "+values[breakpoint][1]);
                     subseaquence[breakpoint]=values[newindex][0];
+                    values[newindex][1] = 1;
                 }
-                values[newindex][1] = 1;
+
             }
-            if(newindex!=values.length-1) {
+            if(newindex!=values.length-1&&newindex!=breakpoint) {
                 checkerror(values, newindex);
             }
         }
@@ -156,6 +160,8 @@ public class ZigZag {
 
             //2D array Value
             int[][] genArray=checker(values);
+
+            //for(int[] k:genArray) System.out.println(Arrays.toString(k));
 
             subseaquence=new int[values.length];
             subseaquence[0]=values[0];
