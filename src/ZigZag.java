@@ -42,8 +42,7 @@ public class ZigZag {
 
     //return the mismatch point when a 2D array and a index is given
     private static void checkerror(int[][] values,int index){
-        //System.out.println("Num= "+values[1][0]+" Value= "+values[1][1]+" Num= "+values[2][0]+" Value= "+values[2][1]);
-        int previous=0;
+        int previous=values[index-1][1];
         int breakpoint=-1;
         for (int i=index;i<values.length;i++){
             if(previous==0){
@@ -52,6 +51,7 @@ public class ZigZag {
                     break;
                 }else{
                     previous=1;
+                    //System.out.println(values[i][0]);
                     subseaquence[i]=values[i][0];
                 }
             }else{
@@ -61,6 +61,7 @@ public class ZigZag {
                     break;
                 }else{
                     previous=0;
+                    //System.out.println(values[i][0]);
                     subseaquence[i]=values[i][0];
                 }
             }
@@ -70,6 +71,7 @@ public class ZigZag {
             int newindex=-1;
             if(values[breakpoint][1]==1){
                 newindex=sethighesttLow(values,breakpoint);
+                //System.out.println(values[newindex][0]+" "+values[breakpoint][1]);
                 //System.out.println("new Index= "+newindex);
                 if(newindex!=breakpoint) {
                     subseaquence[breakpoint] = values[newindex][0];
@@ -79,6 +81,7 @@ public class ZigZag {
                 newindex=setlowestHigh(values,breakpoint);
                 //System.out.println("new Index= "+newindex);
                 if(newindex!=breakpoint) {
+                    //System.out.println(values[newindex][0]+" "+values[breakpoint][1]);
                     subseaquence[breakpoint]=values[newindex][0];
                 }
                 values[newindex][1] = 1;
@@ -112,21 +115,23 @@ public class ZigZag {
         return inputs;
     }
 
+    //check same valued inputs and get a count of them
     private static int getsame(int[] values){
         int previous=-1;
         int count=0;
         for(int num:values){
-            if(previous==-1){
+            if(previous==-1&&num!=0){
                 previous=num;
             }else{
-                if(previous==num){
-                    count++;
-                    previous=num;
-                }else{
-                    previous=num;
+                if(num!=0) {
+                    if (previous == num) {
+                        count++;
+                        previous = num;
+                    } else {
+                        previous = num;
+                    }
                 }
             }
-
         }
         return count;
     }
@@ -151,6 +156,7 @@ public class ZigZag {
 
             //2D array Value
             int[][] genArray=checker(values);
+
             subseaquence=new int[values.length];
             subseaquence[0]=values[0];
             checkerror(genArray,1);
@@ -159,12 +165,13 @@ public class ZigZag {
             for(int k:subseaquence){
                 if(k!=0) {
                     count++;
-                    //System.out.print(k + " ");
+                    System.out.print(k + " ");
                 }
             }
-            int sameinputs=getsame(values);
+
+            int sameinputs=getsame(subseaquence);
             //System.out.println(sameinputs);
-            System.out.println(count-sameinputs);
+            System.out.println("\nLongest Sub-Sequence "+(count-sameinputs));
         }
     }
 }
