@@ -86,7 +86,6 @@ public class ZigZag {
 
     private static int[][] checker(int[] values){   //Set Values for the 2D Array
         int[][] arr=new int[values.length][2];
-        if((values[0]-values[1])>0) arr[0][1]=1;
         for(int i=1;i<values.length;i++){
             arr[i][0]=values[i];
             if(values[i]-values[i-1]>0){
@@ -106,16 +105,37 @@ public class ZigZag {
         return inputs;
     }
 
+    private static int getsame(int[] values){  //check same valued inputs and get a count of them
+        int previous=-1;
+        int count=0;
+        for(int num:values){
+            if(previous==-1&&num!=0){
+                previous=num;
+            }else{
+                if(num!=0) {
+                    if (previous == num) {
+                        count++;
+                        previous = num;
+                    } else {
+                        previous = num;
+                    }
+                }
+            }
+        }
+        return count;
+    }
 
     public static void main(String args[]){ //Driver Method
         Scanner inputter=new Scanner(System.in);
         // Number of test Cases
+        System.out.println("Enter the Number of Test Case: ");
         int numberofCases=inputter.nextInt();
         for(int i=0;i<numberofCases;i++){
-
+            System.out.println("Number of elements per test case: ");
             int inputSize=inputter.nextInt(); //number of inputs per test case
 
             inputter.nextLine(); //input value list
+            System.out.println("Enter the Element List: ");
             String input1=inputter.nextLine();
             String[] separted=input1.split("\\s+");
 
@@ -128,18 +148,14 @@ public class ZigZag {
             checkerror(genArray,1); //calling recursive Algorithm
 
             int count=0;
-            int prev=-1;
             for(int k:subseaquence){
                 if(k!=0) {
-                    if(prev==-1) prev=k;
-                    if(prev!=k){
-                        count++;
-                        System.out.print(k + " ");
-                    }
-                    prev=k;
+                    count++;
+                    System.out.print(k + " ");
                 }
             }
-            System.out.println("\nLongest Sub-Sequence "+count);
+            int sameinputs=getsame(subseaquence);
+            System.out.println("\nLongest Sub-Sequence "+(count-sameinputs));
         }
     }
 }
